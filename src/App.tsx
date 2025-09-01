@@ -5,8 +5,8 @@ function App() {
   return (
     <div className="App">
       <MediaLibraryWidget 
-        cloudName="yelenik"
-        apiKey="367982113469381"
+        cloudName="<your_cloud_name>"
+        apiKey="<your_api_key>"
       />
     </div>
   );
