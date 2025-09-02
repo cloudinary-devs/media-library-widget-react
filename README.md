@@ -11,76 +11,158 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
 - **React Integration**: Built with React and TypeScript
 - **Modern UI**: Clean, responsive design with environment switching
 
-## Setup
+## Quick Start
 
-1. **Get Cloudinary Credentials**:
-   - Sign up at [Cloudinary](https://cloudinary.com/)
-   - Get your `cloud_name` and `api_key` from the [API Keys](https://console.cloudinary.com/app/settings/api-keys) page
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/media-library-widget-react.git
+   cd media-library-widget-react
+   ```
 
-2. **Configure Product Environments**:
-   - Edit `src/config/clouds.ts`
-   - Replace the placeholder values with your actual Cloudinary credentials:
-
-    ```typescript
-    export const cloudConfigs: CloudConfig[] = [
-      {
-        name: "Production",
-        cloudName: "mycompany123",
-        apiKey: "123456789012345"
-      },
-      {
-        name: "Staging",
-        cloudName: "mycompany456", 
-        apiKey: "987654321098765"
-      }
-      // Add more environments as needed...
-    ];
-    ```
-
-3. **Install Dependencies**:
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-4. **Run the Demo**:
+3. **Configure your Cloudinary environments** (see detailed setup below)
+
+4. **Start the development server**:
    ```bash
    npm run dev
    ```
 
+5. **Open your browser** to `http://localhost:5173`
+
+## Detailed Setup
+
+### 1. Get Cloudinary Credentials
+
+- **Sign up**: Create an account at [Cloudinary](https://cloudinary.com/)
+- **Get credentials**: Navigate to [API Keys](https://console.cloudinary.com/app/settings/api-keys) in your dashboard
+- **Note down**: Your `cloud_name` and `api_key` (you don't need the API secret for this widget)
+
+### 2. Configure Product Environments
+
+Edit `src/config/clouds.ts` and replace the placeholder values with your actual Cloudinary credentials:
+
+```typescript
+export const cloudConfigs: CloudConfig[] = [
+  {
+    name: "Production",
+    cloudName: "mycompany123",
+    apiKey: "123456789012345"
+  },
+  {
+    name: "Staging",
+    cloudName: "mycompany456", 
+    apiKey: "987654321098765"
+  },
+  {
+    name: "Development",
+    cloudName: "mycompany789",
+    apiKey: "111222333444555"
+  }
+  // Add more environments as needed...
+];
+```
+
+**Important**: 
+- Only environments with real credentials (no placeholders) will appear in the dropdown
+- You can add as many environments as you need
+- Each environment can have a different name, cloud name, and API key
+
+### 3. Test the Configuration
+
+1. **Start the app**: `npm run dev`
+2. **Check the dropdown**: You should see your configured environments
+3. **Select an environment**: The Media Library Widget should initialize
+4. **Test the widget**: Click "Open Media Library" to verify it works
+
 ## How It Works
 
-1. **Configuration Check**: The app checks for configured product environments in `src/config/clouds.ts`
-2. **Empty State**: If no environments are configured, shows setup instructions
-3. **Environment Selection**: Once configured, shows dropdown to select product environment
-4. **Widget Initialization**: Media Library Widget initializes with selected environment
-5. **Environment Switching**: Users can switch between different product environments
+1. **Configuration Check**: The app loads cloud configurations from `src/config/clouds.ts`
+2. **Environment Filtering**: Only environments with real credentials are displayed
+3. **Widget Initialization**: Media Library Widget initializes with the selected environment
+4. **Environment Switching**: Users can switch between different product environments via dropdown
+5. **Asset Handling**: Automatically uses transformed URLs (`asset.derived`) when available
 
 ## Key Implementation Details
 
 ### Multiple Product Environment Support
-- Configure unlimited product environments by editing `src/config/clouds.ts`
-- Each environment can have different names, cloud names, and API keys
-- Automatic filtering of placeholder configurations
-- Seamless switching between environments
-- **Placeholder filtering**: Only environments with real credentials appear in the dropdown
+- **Unlimited environments**: Add as many as you need in the config file
+- **Easy switching**: Dropdown allows users to switch between environments
+- **Automatic filtering**: Placeholder configurations are automatically hidden
+- **Real-time updates**: Widget reinitializes when switching environments
 
 ### Transformation Handling
 The widget automatically detects and uses the correct URLs:
-- **Transformed assets**: Uses `asset.derived` URL
-- **Original assets**: Falls back to `asset.secure_url`
+- **With transformations**: Uses `asset.derived` (transformed URL)
+- **Without transformations**: Falls back to `asset.secure_url` (original URL)
 
-This prevents the common issue of storing wrong URLs when transformations are applied.
+This prevents the common integration issue of storing wrong URLs when transformations are applied.
+
+### Configuration Structure
+```typescript
+interface CloudConfig {
+  name: string;        // Display name (e.g., "Production", "Staging")
+  cloudName: string;   // Cloudinary cloud name
+  apiKey: string;      // Cloudinary API key
+}
+```
 
 ## Customization
 
-Modify the widget configuration in `src/components/MediaLibraryWidget.tsx`:
+### Widget Configuration
+Modify the widget settings in `src/components/MediaLibraryWidget.tsx`:
 - `max_files`: Number of files that can be selected
-- `default_transformations`: Default image transformations
-- `integration`: Custom integration details
+- `default_transformations`: Default image transformations applied
+- `integration`: Custom integration details for analytics
+
+### Styling
+- **CSS**: Edit `src/App.css` for custom styling
+- **Layout**: Modify `src/components/MediaLibraryWidget.tsx` for UI changes
+- **Themes**: Add CSS variables for easy theming
+
+## Troubleshooting
+
+### Common Issues
+
+**"No environments configured" message**:
+- Check that `src/config/clouds.ts` has real credentials (no placeholders)
+- Ensure all three fields (name, cloudName, apiKey) are filled in
+- Restart the development server after making changes
+
+**Widget not initializing**:
+- Verify your Cloudinary credentials are correct
+- Check browser console for error messages
+- Ensure your cloud name and API key match exactly
+
+**Environment not appearing in dropdown**:
+- Make sure the configuration doesn't contain placeholder text like "your_cloud_name_1"
+- Check that all required fields are populated
+- Restart the server after configuration changes
+
+### Development Tips
+
+- **Hot reload**: Most changes will automatically reload in the browser
+- **Console logging**: Check browser console for detailed widget initialization logs
+- **Environment switching**: Test switching between different environments to ensure all work
 
 ## Technologies Used
 
-- React 19
-- TypeScript
-- Vite
-- Cloudinary Media Library Widget
+- **React 19** - Modern React with hooks and functional components
+- **TypeScript** - Type-safe development experience
+- **Vite** - Fast build tool and development server
+- **Cloudinary Media Library Widget** - Official Cloudinary widget for media selection
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).

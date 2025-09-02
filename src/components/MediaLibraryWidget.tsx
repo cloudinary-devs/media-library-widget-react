@@ -136,38 +136,39 @@ export const MediaLibraryWidget: React.FC = () => {
         <div className="empty-state">
           <h2>No Product Environment Credentials Found</h2>
           <p>
-            To get started, you need to enter credentials for one or more product environments in your <code>.env</code> file.
+            To get started, you need to configure your Cloudinary environments in the configuration file.
           </p>
           
           <div className="setup-instructions">
             <h3>Setup Instructions:</h3>
             <ol>
-              <li>Copy <code>env.example</code> to <code>.env</code></li>
-              <li>Enter your actual Cloudinary credentials for one or more product environments:</li>
+              <li>Edit <code>src/config/clouds.ts</code></li>
+              <li>Replace the placeholder values with your actual Cloudinary credentials:</li>
               <ul>
-                <li><strong>Environment Name</strong> - Give each environment a descriptive name</li>
+                <li><strong>Environment Name</strong> - Give each environment a descriptive name (e.g., "Production", "Staging")</li>
                 <li><strong>Cloud Name</strong> - Your Cloudinary cloud name</li>
                 <li><strong>API Key</strong> - Your Cloudinary API key</li>
-                <li><strong>API Secret</strong> - Your Cloudinary API secret</li>
               </ul>
-              <li>Replace all placeholder values with your real credentials</li>
-              <li>Restart the development server</li>
+              <li>Remove or comment out any environments you don't want to use</li>
+              <li>Save the file and refresh your browser</li>
             </ol>
             
-            <div className="env-example">
-              <h4>Example .env configuration:</h4>
+            <div className="config-example">
+              <h4>Example configuration in <code>src/config/clouds.ts</code>:</h4>
               <pre>
-{`# Product Environment 1
-VITE_PRODUCT_ENVIRONMENT_1_NAME="My Main Cloud"
-VITE_PRODUCT_ENVIRONMENT_1_CLOUD_NAME="mycompany123"
-VITE_PRODUCT_ENVIRONMENT_1_API_KEY="123456789012345"
-VITE_PRODUCT_ENVIRONMENT_1_API_SECRET="abcdefghijklmnopqrstuvwxyz123"
-
-# Product Environment 2 (optional)
-VITE_PRODUCT_ENVIRONMENT_2_NAME="My Second Cloud"
-VITE_PRODUCT_ENVIRONMENT_2_CLOUD_NAME="mycompany456"
-VITE_PRODUCT_ENVIRONMENT_2_API_KEY="987654321098765"
-VITE_PRODUCT_ENVIRONMENT_2_API_SECRET="zyxwvutsrqponmlkjihgfedcba987"`}
+{`export const cloudConfigs: CloudConfig[] = [
+  {
+    name: "Production",
+    cloudName: "mycompany123",
+    apiKey: "123456789012345"
+  },
+  {
+    name: "Staging",
+    cloudName: "mycompany456", 
+    apiKey: "987654321098765"
+  }
+  // Add more environments as needed...
+];`}
               </pre>
             </div>
             
@@ -175,8 +176,8 @@ VITE_PRODUCT_ENVIRONMENT_2_API_SECRET="zyxwvutsrqponmlkjihgfedcba987"`}
               <h4>Important Notes:</h4>
               <ul>
                 <li>Only environments with real credentials (no placeholders) will appear in the dropdown</li>
-                <li>Make sure your <code>.env</code> file is in the root directory</li>
-                <li>Restart the server after making changes to <code>.env</code></li>
+                <li>Changes to the config file will take effect after refreshing the browser</li>
+                <li>You can add as many environments as you need</li>
               </ul>
             </div>
           </div>
