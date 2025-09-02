@@ -21,6 +21,22 @@ body {
   font-size: 1.5rem;
 }
 
+.media-library-widget h2 {
+  color: #495057;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.media-library-widget h3 {
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.media-library-widget h4 {
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
 .media-library-widget p {
   color: #666;
   text-align: center;
@@ -32,6 +48,152 @@ body {
   font-style: italic;
   color: #007bff;
   font-weight: bold;
+}
+
+/* Empty State Styles */
+.empty-state {
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.empty-state h2 {
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.setup-instructions {
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.setup-instructions ol {
+  margin: 20px 0;
+  padding-left: 20px;
+}
+
+.setup-instructions ul {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.setup-instructions li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.setup-instructions strong {
+  color: #007bff;
+}
+
+.env-example {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.env-example pre {
+  background-color: #e9ecef;
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 10px 0 0 0;
+}
+
+.important-note {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.important-note h4 {
+  color: #856404;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.important-note ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #856404;
+}
+
+.important-note li {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+/* Cloud Selector Styles */
+.cloud-selector {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cloud-selector label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #495057;
+}
+
+.cloud-selector select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.cloud-selector select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Cloud Status Styles */
+.cloud-status {
+  background-color: #e9ecef;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cloud-status p {
+  margin: 5px 0;
+  color: #495057;
+}
+
+.cloud-status strong {
+  color: #007bff;
+}
+
+.capability-error {
+  color: #dc3545 !important;
+  font-size: 0.9em;
+}
+
+.capability-error strong {
+  color: #dc3545 !important;
 }
 
 .open-btn {
@@ -47,8 +209,14 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.open-btn:hover {
+.open-btn:hover:not(:disabled) {
   background-color: #0056b3;
+}
+
+.open-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .media-library-widget hr {

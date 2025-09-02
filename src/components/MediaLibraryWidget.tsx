@@ -1,52 +1,85 @@
-import { useEffect, useRef } from 'react';
-
-interface MediaLibraryWidgetProps {
-  cloudName: string;
-  apiKey: string;
-}
+import { useEffect, useRef, useState } from 'react';
+import type { CloudConfig } from '../utils/cloudConfig';
+import { loadCloudConfigs, hasCloudConfigs } from '../utils/cloudConfig';
 
 declare global {
   interface Window {
     cloudinary: {
       createMediaLibrary: (
         config: any,
-        handlers: any
+        handlers: any,
+        target?: HTMLElement
       ) => any;
     };
   }
 }
 
-export const MediaLibraryWidget: React.FC<MediaLibraryWidgetProps> = ({
-  cloudName,
-  apiKey,
-}) => {
+export const MediaLibraryWidget: React.FC = () => {
   const mediaLibraryRef = useRef<any>(null);
+  const [availableClouds, setAvailableClouds] = useState<CloudConfig[]>([]);
+  const [selectedCloud, setSelectedCloud] = useState<CloudConfig | null>(null);
+  const [isCloudReady, setIsCloudReady] = useState(false);
+
+  // Load cloud configurations from environment variables
+  useEffect(() => {
+    const clouds = loadCloudConfigs();
+    setAvailableClouds(clouds);
+    
+    if (clouds.length > 0) {
+      setSelectedCloud(clouds[0]);
+    }
+  }, []);
 
   useEffect(() => {
-    const initWidget = () => {
-      if (window.cloudinary) {
+    const initWidget = async () => {
+      if (window.cloudinary && selectedCloud) {
         try {
+          console.log('Initializing widget for cloud:', selectedCloud.name);
+          
+          console.log('Creating Media Library Widget...');
           mediaLibraryRef.current = window.cloudinary.createMediaLibrary(
             {
-              cloud_name: cloudName,
-              api_key: apiKey,
+              cloud_name: selectedCloud.cloudName,
+              api_key: selectedCloud.apiKey,
               remove_header: false,
-              max_files: '1',
+              max_files: '3',
               insert_caption: 'Insert',
-              default_transformations: [[]],
-              button_class: 'myBtn',
-              button_caption: 'Access the Media Library',
+              default_transformations: [
+                [{"quality": "auto"}, {"fetch_format": "auto"}]
+              ],
+              button_caption: 'Select Image or Video',
+              integration: {
+                type: "react_widget",
+                platform: "react",
+                version: "1.0",
+                environment: "prod",
+              }
             },
             {
               insertHandler: function (data: any) {
                 data.assets.forEach((asset: any) => {
-                  // Asset inserted successfully
+                  // IMPORTANT: Check for transformations and use derived URLs
+                  // This addresses the most common integration issue
+                  const urlToUse = asset.derived || asset.secure_url || asset.url;
+                  
+                  // Log the asset details for debugging
+                  console.log('Asset inserted:', {
+                    originalUrl: asset.secure_url,
+                    derivedUrl: asset.derived,
+                    finalUrl: urlToUse,
+                    transformations: asset.derived ? 'Applied' : 'None',
+                    assetType: asset.resource_type,
+                    format: asset.format
+                  });
                 });
               },
             }
           );
+          console.log('Widget created successfully');
+          setIsCloudReady(true);
         } catch (error) {
-          // Handle initialization error silently
+          console.error('Error initializing widget:', error);
+          setIsCloudReady(false);
         }
       }
     };
@@ -65,10 +98,10 @@ export const MediaLibraryWidget: React.FC<MediaLibraryWidgetProps> = ({
       
       return () => clearInterval(interval);
     }
-  }, [cloudName, apiKey]);
+  }, [selectedCloud]);
 
   const openMediaLibrary = () => {
-    if (mediaLibraryRef.current) {
+    if (mediaLibraryRef.current && isCloudReady) {
       try {
         mediaLibraryRef.current.show();
       } catch (error) {
@@ -77,15 +110,114 @@ export const MediaLibraryWidget: React.FC<MediaLibraryWidgetProps> = ({
     }
   };
 
+  const handleCloudChange = (cloudIndex: number) => {
+    if (cloudIndex >= 0 && cloudIndex < availableClouds.length) {
+      setSelectedCloud(availableClouds[cloudIndex]);
+      setIsCloudReady(false);
+      // Widget will be reinitialized in useEffect
+    }
+  };
+
+  // Empty state when no product environments are configured
+  if (!hasCloudConfigs()) {
+    return (
+      <div className="media-library-widget">
+        <h1>Implementing the Media Library Widget in React</h1>
+        
+        <div className="empty-state">
+          <h2>No Product Environment Credentials Found</h2>
+          <p>
+            To get started, you need to enter credentials for one or more product environments in your <code>.env</code> file.
+          </p>
+          
+          <div className="setup-instructions">
+            <h3>Setup Instructions:</h3>
+            <ol>
+              <li>Copy <code>env.example</code> to <code>.env</code></li>
+              <li>Enter your actual Cloudinary credentials for one or more product environments:</li>
+              <ul>
+                <li><strong>Environment Name</strong> - Give each environment a descriptive name</li>
+                <li><strong>Cloud Name</strong> - Your Cloudinary cloud name</li>
+                <li><strong>API Key</strong> - Your Cloudinary API key</li>
+                <li><strong>API Secret</strong> - Your Cloudinary API secret</li>
+              </ul>
+              <li>Replace all placeholder values with your real credentials</li>
+              <li>Restart the development server</li>
+            </ol>
+            
+            <div className="env-example">
+              <h4>Example .env configuration:</h4>
+              <pre>
+{`# Product Environment 1
+VITE_PRODUCT_ENVIRONMENT_1_NAME="My Main Cloud"
+VITE_PRODUCT_ENVIRONMENT_1_CLOUD_NAME="mycompany123"
+VITE_PRODUCT_ENVIRONMENT_1_API_KEY="123456789012345"
+VITE_PRODUCT_ENVIRONMENT_1_API_SECRET="abcdefghijklmnopqrstuvwxyz123"
+
+# Product Environment 2 (optional)
+VITE_PRODUCT_ENVIRONMENT_2_NAME="My Second Cloud"
+VITE_PRODUCT_ENVIRONMENT_2_CLOUD_NAME="mycompany456"
+VITE_PRODUCT_ENVIRONMENT_2_API_KEY="987654321098765"
+VITE_PRODUCT_ENVIRONMENT_2_API_SECRET="zyxwvutsrqponmlkjihgfedcba987"`}
+              </pre>
+            </div>
+            
+            <div className="important-note">
+              <h4>Important Notes:</h4>
+              <ul>
+                <li>Only environments with real credentials (no placeholders) will appear in the dropdown</li>
+                <li>Make sure your <code>.env</code> file is in the root directory</li>
+                <li>Restart the server after making changes to <code>.env</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Product environment selection and widget interface
   return (
     <div className="media-library-widget">
       <h1>Implementing the Media Library Widget in React</h1>
+      
+      {/* Product Environment Selector */}
+      <div className="cloud-selector">
+        <label htmlFor="cloud-select">Select Product Environment:</label>
+        <select
+          id="cloud-select"
+          value={availableClouds.findIndex(cloud => cloud.cloudName === selectedCloud?.cloudName)}
+          onChange={(e) => handleCloudChange(parseInt(e.target.value))}
+        >
+          {availableClouds.map((cloud, index) => (
+            <option key={index} value={index}>
+              {cloud.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Product Environment Status */}
+      {selectedCloud && (
+        <div className="cloud-status">
+          <p>Current Environment: <strong>{selectedCloud.name}</strong></p>
+          <p>Cloud Name: <strong>{selectedCloud.cloudName}</strong></p>
+          <p>Status: <strong>{isCloudReady ? 'Ready' : 'Initializing...'}</strong></p>
+        </div>
+      )}
+
       <p>
-        Please provide your <i>cloud_name</i> and <i>api_key</i> in the <code>src/App.tsx</code> file.
+        Your product environments are configured! Select a product environment above and click the button below to open the Media Library Widget.
       </p>
-      <button onClick={openMediaLibrary} className="open-btn">
-        Access the Media Library
+      
+      <button 
+        onClick={openMediaLibrary} 
+        className="open-btn"
+        disabled={!isCloudReady}
+      >
+        {isCloudReady ? 'Open Media Library Widget' : 'Initializing...'}
       </button>
+      
       <hr />
     </div>
   );
