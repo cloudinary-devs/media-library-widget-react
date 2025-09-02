@@ -26,13 +26,11 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
     VITE_PRODUCT_ENVIRONMENT_1_NAME="Environment Name 1"
     VITE_PRODUCT_ENVIRONMENT_1_CLOUD_NAME="your_cloud_name_1"
     VITE_PRODUCT_ENVIRONMENT_1_API_KEY="your_api_key_1"
-    VITE_PRODUCT_ENVIRONMENT_1_API_SECRET="your_api_secret_1"
 
     # Product Environment 2 (optional)
     VITE_PRODUCT_ENVIRONMENT_2_NAME="Environment Name 2"
     VITE_PRODUCT_ENVIRONMENT_2_CLOUD_NAME="your_cloud_name_2"
     VITE_PRODUCT_ENVIRONMENT_2_API_KEY="your_api_key_2"
-    VITE_PRODUCT_ENVIRONMENT_2_API_SECRET="your_api_secret_2"
 
     # Add more environments as needed...
     ```
