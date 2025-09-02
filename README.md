@@ -6,7 +6,7 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
 
 - **Media Library Widget**: Browse and select images/videos from Cloudinary
 - **Multiple Product Environment Support**: Configure and switch between different product environments
-- **Dynamic Configuration**: Supports unlimited number of product environments via environment variables
+- **Simple Configuration**: Easy-to-edit configuration file for cloud environments
 - **Transformation-Aware**: Automatically handles transformed vs original URLs
 - **React Integration**: Built with React and TypeScript
 - **Modern UI**: Clean, responsive design with environment switching
@@ -15,24 +15,26 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
 
 1. **Get Cloudinary Credentials**:
    - Sign up at [Cloudinary](https://cloudinary.com/)
-   - Get your `cloud_name`, `api_key`, and `api_secret` from the [API Keys](https://console.cloudinary.com/app/settings/api-keys) page
+   - Get your `cloud_name` and `api_key` from the [API Keys](https://console.cloudinary.com/app/settings/api-keys) page
 
 2. **Configure Product Environments**:
-   - Copy `env.example` to `.env`
-   - Enter your actual Cloudinary credentials for each product environment:
+   - Edit `src/config/clouds.ts`
+   - Replace the placeholder values with your actual Cloudinary credentials:
 
-    ```bash
-    # Product Environment 1
-    VITE_PRODUCT_ENVIRONMENT_1_NAME="Environment Name 1"
-    VITE_PRODUCT_ENVIRONMENT_1_CLOUD_NAME="your_cloud_name_1"
-    VITE_PRODUCT_ENVIRONMENT_1_API_KEY="your_api_key_1"
-
-    # Product Environment 2 (optional)
-    VITE_PRODUCT_ENVIRONMENT_2_NAME="Environment Name 2"
-    VITE_PRODUCT_ENVIRONMENT_2_CLOUD_NAME="your_cloud_name_2"
-    VITE_PRODUCT_ENVIRONMENT_2_API_KEY="your_api_key_2"
-
-    # Add more environments as needed...
+    ```typescript
+    export const cloudConfigs: CloudConfig[] = [
+      {
+        name: "Production",
+        cloudName: "mycompany123",
+        apiKey: "123456789012345"
+      },
+      {
+        name: "Staging",
+        cloudName: "mycompany456", 
+        apiKey: "987654321098765"
+      }
+      // Add more environments as needed...
+    ];
     ```
 
 3. **Install Dependencies**:
@@ -47,7 +49,7 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
 
 ## How It Works
 
-1. **Configuration Check**: The app checks for configured product environments
+1. **Configuration Check**: The app checks for configured product environments in `src/config/clouds.ts`
 2. **Empty State**: If no environments are configured, shows setup instructions
 3. **Environment Selection**: Once configured, shows dropdown to select product environment
 4. **Widget Initialization**: Media Library Widget initializes with selected environment
@@ -56,9 +58,9 @@ This is a React demo showcasing the Cloudinary Media Library Widget integration 
 ## Key Implementation Details
 
 ### Multiple Product Environment Support
-- Configure unlimited product environments using environment variables
-- Each environment can have different names, API keys, and secrets
-- Automatic environment discovery and validation
+- Configure unlimited product environments by editing `src/config/clouds.ts`
+- Each environment can have different names, cloud names, and API keys
+- Automatic filtering of placeholder configurations
 - Seamless switching between environments
 - **Placeholder filtering**: Only environments with real credentials appear in the dropdown
 

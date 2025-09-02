@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CloudConfig } from '../utils/cloudConfig';
-import { loadCloudConfigs, hasCloudConfigs } from '../utils/cloudConfig';
+import type { CloudConfig } from '../config/clouds';
+import { cloudConfigs, hasCloudConfigs } from '../config/clouds';
 
 declare global {
   interface Window {
@@ -20,13 +20,22 @@ export const MediaLibraryWidget: React.FC = () => {
   const [selectedCloud, setSelectedCloud] = useState<CloudConfig | null>(null);
   const [isCloudReady, setIsCloudReady] = useState(false);
 
-  // Load cloud configurations from environment variables
+  // Load cloud configurations from config file
   useEffect(() => {
-    const clouds = loadCloudConfigs();
-    setAvailableClouds(clouds);
+    // Filter out placeholder configurations
+    const validClouds = cloudConfigs.filter(config => 
+      config.name && 
+      config.cloudName && 
+      config.apiKey &&
+      !config.name.includes('your_') &&
+      !config.cloudName.includes('your_') &&
+      !config.apiKey.includes('your_')
+    );
     
-    if (clouds.length > 0) {
-      setSelectedCloud(clouds[0]);
+    setAvailableClouds(validClouds);
+    
+    if (validClouds.length > 0) {
+      setSelectedCloud(validClouds[0]);
     }
   }, []);
 
