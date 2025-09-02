@@ -145,7 +145,7 @@ export const MediaLibraryWidget: React.FC = () => {
               <li>Edit <code>src/config/clouds.ts</code></li>
               <li>Replace the placeholder values with your actual Cloudinary credentials:</li>
               <ul>
-                <li><strong>Environment Name</strong> - Give each environment a descriptive name (e.g., "Production", "Staging")</li>
+                <li><strong>Product Environment Name</strong> - Give each environment a descriptive name (e.g., "Production", "Staging")</li>
                 <li><strong>Cloud Name</strong> - Your Cloudinary cloud name</li>
                 <li><strong>API Key</strong> - Your Cloudinary API key</li>
               </ul>
@@ -175,7 +175,7 @@ export const MediaLibraryWidget: React.FC = () => {
             <div className="important-note">
               <h4>Important Notes:</h4>
               <ul>
-                <li>Only environments with real credentials (no placeholders) will appear in the dropdown</li>
+                <li>Only product environments with real credentials (no placeholders) will appear in the dropdown</li>
                 <li>Changes to the config file will take effect after refreshing the browser</li>
                 <li>You can add as many environments as you need</li>
               </ul>

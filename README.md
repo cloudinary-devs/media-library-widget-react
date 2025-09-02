@@ -67,21 +67,21 @@ export const cloudConfigs: CloudConfig[] = [
 ```
 
 **Important**: 
-- Only environments with real credentials (no placeholders) will appear in the dropdown
-- You can add as many environments as you need
-- Each environment can have a different name, cloud name, and API key
+- Only product environments with real credentials (no placeholders) will appear in the dropdown
+- You can add as many product environments as you need
+- Each product environment can have a different name, cloud name, and API key
 
 ### 3. Test the Configuration
 
 1. **Start the app**: `npm run dev`
 2. **Check the dropdown**: You should see your configured environments
-3. **Select an environment**: The Media Library Widget should initialize
+3. **Select a product environment**: The Media Library Widget should initialize
 4. **Test the widget**: Click "Open Media Library" to verify it works
 
 ## How It Works
 
 1. **Configuration Check**: The app loads cloud configurations from `src/config/clouds.ts`
-2. **Environment Filtering**: Only environments with real credentials are displayed
+2. **Environment Filtering**: Only product environments with real credentials are displayed
 3. **Widget Initialization**: Media Library Widget initializes with the selected environment
 4. **Environment Switching**: Users can switch between different product environments via dropdown
 5. **Asset Handling**: Automatically uses transformed URLs (`asset.derived`) when available
