@@ -177,7 +177,7 @@ export const MediaLibraryWidget: React.FC = () => {
               <ul>
                 <li>Only product environments with real credentials (no placeholders) will appear in the dropdown</li>
                 <li>Changes to the config file will take effect after refreshing the browser</li>
-                <li>You can add as many environments as you need</li>
+                <li>You can add as many product environments as you need</li>
               </ul>
             </div>
           </div>
