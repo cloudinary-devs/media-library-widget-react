@@ -11,14 +11,14 @@ export interface CloudConfig {
 
 export const cloudConfigs: CloudConfig[] = [
   {
-    name: "Production",
-    cloudName: "your_cloud_name_1",
-    apiKey: "your_api_key_1"
+    name: "My Org - Production",
+    cloudName: "yelenik",
+    apiKey: "112462679192568"
   },
   {
-    name: "Staging",
-    cloudName: "your_cloud_name_2", 
-    apiKey: "your_api_key_2"
+    name: "Development",
+    cloudName: "in-development", 
+    apiKey: "528627591592873"
   }
   // Add more environments as needed...
 ];
