@@ -20,7 +20,7 @@ export const cloudConfigs: CloudConfig[] = [
     cloudName: "<your_cloud_name_2>", 
     apiKey: "<your_api_key_2>"
   }
-  // Add more environments as needed...
+  // Add more product environments as needed...
 ];
 
 /**

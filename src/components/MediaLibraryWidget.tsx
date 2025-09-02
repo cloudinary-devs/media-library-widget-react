@@ -149,7 +149,7 @@ export const MediaLibraryWidget: React.FC = () => {
                 <li><strong>Cloud Name</strong> - Your Cloudinary cloud name</li>
                 <li><strong>API Key</strong> - Your Cloudinary API key</li>
               </ul>
-              <li>Remove or comment out any environments you don't want to use</li>
+              <li>Remove or comment out any product environments you don't want to use</li>
               <li>Save the file and refresh your browser</li>
             </ol>
             
