@@ -81,8 +81,7 @@ export const MediaLibraryWidget: React.FC<MediaLibraryWidgetProps> = ({
     <div className="media-library-widget">
       <h1>Implementing the Media Library Widget in React</h1>
       <p>
-        Please provide your <i>cloud_name</i> and <i>api_key</i> in the Media
-        Library Widget component.
+        Please provide your <i>cloud_name</i> and <i>api_key</i> in the <code>src/App.tsx</code> file.
       </p>
       <button onClick={openMediaLibrary} className="open-btn">
         Access the Media Library
